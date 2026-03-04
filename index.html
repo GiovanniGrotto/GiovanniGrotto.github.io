@@ -20,11 +20,6 @@
   .corner{position:fixed;font-family:'VT323',monospace;font-size:11px;color:#00ff4155;z-index:3;pointer-events:none;animation:blink 3s step-end infinite}
   .corner-tl{top:10px;left:10px}.corner-tr{top:10px;right:10px;text-align:right}.corner-bl{bottom:32px;left:10px}.corner-br{bottom:32px;right:10px;text-align:right}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-  .ghost{position:fixed;font-size:20px;z-index:3;pointer-events:none;filter:drop-shadow(0 0 6px currentColor);animation:ghost-wander linear infinite}
-  .ghost:nth-child(1){color:#ffb8ff;top:72%;animation-duration:24s;animation-delay:-7s}
-  .ghost:nth-child(2){color:#00ffff;top:42%;animation-duration:20s;animation-delay:-12s}
-  .ghost:nth-child(3){color:#ffb000;top:83%;animation-duration:15s;animation-delay:-4s}
-  @keyframes ghost-wander{0%{left:-5%;transform:scaleX(1)}49%{left:103%;transform:scaleX(1)}50%{left:103%;transform:scaleX(-1)}99%{left:-5%;transform:scaleX(-1)}100%{left:-5%;transform:scaleX(1)}}
   .pac-dots{position:fixed;z-index:3;pointer-events:none;top:0;left:0;width:100%;height:100%}
   .dot{position:absolute;width:5px;height:5px;border-radius:50%;background:#ffb000;box-shadow:0 0 6px #ffb000;animation:dot-pulse 2s ease-in-out infinite}
   @keyframes dot-pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.6);opacity:1}}
@@ -38,6 +33,7 @@
     max-height:90vh;
     display:flex;
     flex-direction:column;
+    transition:filter 0.05s;
   }
   .win95-bar{
     background:linear-gradient(90deg,#000080 0%,#1084d0 60%,#000080 100%);
@@ -79,6 +75,7 @@
     outline:none;caret-color:var(--green);text-shadow:0 0 8px var(--green);
     letter-spacing:clamp(2px,1.5vw,6px);padding:4px 0;
     -webkit-appearance:none;border-radius:0;
+    transition:border-color 0.1s, color 0.1s;
   }
   #password-input::placeholder{color:#00ff4133;letter-spacing:2px}
   #status-line{margin-top:12px;font-family:'VT323',monospace;font-size:clamp(15px,3.5vw,18px);min-height:22px}
@@ -86,8 +83,164 @@
   .status-ok{color:var(--green);text-shadow:0 0 12px var(--green)}
   .status-wait{color:var(--amber);text-shadow:0 0 8px var(--amber)}
   @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
-  #glitch-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:20;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,0,51,.1) 0px,rgba(255,0,51,.1) 1px,transparent 1px,transparent 4px);animation:glitch-flash .45s steps(2) forwards}
-  @keyframes glitch-flash{0%{opacity:1;transform:skewX(0)}25%{opacity:.8;transform:skewX(-2deg) translateX(5px)}50%{opacity:1;transform:skewX(1.5deg) translateX(-4px)}75%{opacity:.6;transform:skewX(-1deg)}100%{opacity:0}}
+
+  /* ══════════════════════════════════════════
+     GLITCH SYSTEM — layered chaos
+  ══════════════════════════════════════════ */
+
+  /* 1. Full-screen red scanline flash */
+  #glitch-overlay{
+    display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+    z-index:20;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(255,0,51,.18) 0px,rgba(255,0,51,.18) 1px,transparent 1px,transparent 4px);
+  }
+
+  /* 2. RGB channel split on terminal */
+  #terminal-wrap.rgb-split{
+    animation: rgb-split-anim 0.55s steps(1) forwards;
+  }
+  @keyframes rgb-split-anim {
+    0%  { filter: none; }
+    10% { filter: drop-shadow(-6px 0 0 rgba(255,0,51,.9)) drop-shadow(6px 0 0 rgba(0,255,255,.9)); transform: translate(calc(-50% + 4px), calc(-50% - 2px)); }
+    20% { filter: drop-shadow(8px 0 0 rgba(255,0,51,.8)) drop-shadow(-8px 0 0 rgba(0,255,255,.8)); transform: translate(calc(-50% - 3px), calc(-50% + 3px)); }
+    30% { filter: drop-shadow(-3px 2px 0 rgba(255,0,255,.7)) drop-shadow(3px -2px 0 rgba(0,255,0,.6)); transform: translate(calc(-50% + 6px), -50%); }
+    40% { filter: drop-shadow(10px 0 0 rgba(255,0,51,.9)) drop-shadow(-10px 0 0 rgba(0,255,255,.9)); transform: translate(calc(-50% - 5px), calc(-50% + 1px)); }
+    50% { filter: drop-shadow(-4px 0 0 rgba(255,0,51,.6)) drop-shadow(4px 0 0 rgba(0,255,255,.6)); transform: translate(calc(-50% + 2px), calc(-50% - 4px)); }
+    65% { filter: drop-shadow(2px 0 0 rgba(255,0,51,.3)); transform: translate(calc(-50% - 1px), -50%); }
+    100%{ filter: none; transform: translate(-50%, -50%); }
+  }
+
+  /* 3. Horizontal screen tears */
+  #tear-canvas{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    z-index:19;pointer-events:none;display:none;
+    image-rendering:pixelated;
+  }
+
+  /* 4. Ghost intruder */
+  #ghost-intruder, #ghost-intruder2 {
+  position:fixed;z-index:25;pointer-events:none;
+  color:var(--red);font-family:'Share Tech Mono',monospace;
+  filter:drop-shadow(0 0 10px #ff0033) drop-shadow(0 0 28px #ff003388);
+  display:none;
+  animation: ghost-appear 1.2s steps(2) forwards;
+}
+#ghost-intruder  { top: 22%; left: 8%; }
+#ghost-intruder2 { top: 55%; right: 8%; left:auto; }
+@keyframes ghost-appear {
+  0%  { opacity:0; }
+  10% { opacity:1; }
+  80% { opacity:1; }
+  100%{ opacity:0; }
+}
+  @keyframes ghost-run{
+    0%  { left:-120px; top: 20%; opacity:1; }
+    30% { top: 38%; }
+    60% { top: 22%; }
+    85% { left: 110vw; opacity:1; }
+    100%{ left: 110vw; opacity:0; }
+  }
+
+  /* 5. BREACH ALERT overlay */
+  #breach-alert{
+    display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+    z-index:22;pointer-events:none;
+    align-items:center;justify-content:center;flex-direction:column;
+    font-family:'VT323',monospace;
+  }
+  #breach-alert.active{ display:flex; }
+  #breach-inner{
+    background:rgba(255,0,51,.12);
+    border:3px solid var(--red);
+    padding:clamp(10px,3vw,24px) clamp(16px,5vw,48px);
+    text-align:center;
+    box-shadow:0 0 60px #ff003366, inset 0 0 40px #ff003322;
+    animation:breach-pop .18s ease-out;
+    max-width:90vw;
+  }
+  @keyframes breach-pop{
+    0%{transform:scale(.7) skewX(-8deg);opacity:0}
+    60%{transform:scale(1.08) skewX(1deg);opacity:1}
+    100%{transform:scale(1) skewX(0deg)}
+  }
+  #breach-title{
+    font-size:clamp(32px,10vw,72px);
+    color:var(--red);text-shadow:0 0 20px var(--red),0 0 60px var(--red);
+    letter-spacing:4px;
+    animation:breach-flicker .12s step-end infinite;
+    line-height:1;
+  }
+  @keyframes breach-flicker{0%,100%{opacity:1}50%{opacity:.6}}
+  #breach-sub{
+    font-size:clamp(13px,4vw,22px);
+    color:#ff003388;letter-spacing:3px;margin-top:8px;
+  }
+  #breach-code{
+    font-size:clamp(10px,2.5vw,14px);
+    color:#ff003355;margin-top:12px;
+    font-family:'Share Tech Mono',monospace;letter-spacing:1px;line-height:1.8;
+  }
+
+  /* 6. Terminal body corruption */
+  .terminal-body.corrupted{
+    animation:body-corrupt 0.5s steps(2) forwards;
+  }
+  @keyframes body-corrupt{
+    0%  { background:rgba(0,3,0,.97); }
+    15% { background:rgba(50,0,0,.97); border-color: var(--red); }
+    30% { background:rgba(0,3,0,.97); border-color: var(--red); }
+    50% { background:rgba(30,0,0,.97); border-color: var(--red); }
+    75% { background:rgba(0,3,0,.97); border-color: var(--red); }
+    100%{ background:rgba(0,3,0,.97); border-color: var(--green); }
+  }
+
+  /* 7. Input field shock */
+  #password-input.input-shock{
+    animation: input-shock-anim 0.5s steps(1) forwards;
+  }
+  @keyframes input-shock-anim{
+    0%  { color: var(--green); border-color: var(--green); text-shadow:0 0 8px var(--green); }
+    10% { color: var(--red);   border-color: var(--red);   text-shadow:0 0 16px var(--red); background:rgba(255,0,51,.1); }
+    25% { color: #fff;         border-color: var(--red);   text-shadow:0 0 24px #fff; }
+    40% { color: var(--red);   border-color: var(--red);   text-shadow:0 0 8px var(--red); }
+    60% { color: var(--amber); border-color: var(--amber); text-shadow:0 0 12px var(--amber); }
+    80% { color: var(--green); border-color: var(--green); }
+    100%{ color: var(--green); border-color: var(--green); text-shadow:0 0 8px var(--green); background:transparent; }
+  }
+
+  /* 8. Pixel noise blocks */
+  #noise-blocks{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    z-index:18;pointer-events:none;display:none;
+  }
+  .noise-blk{
+    position:absolute;background:var(--red);mix-blend-mode:screen;
+    animation:noise-fade .5s steps(3) forwards;
+  }
+  @keyframes noise-fade{
+    0%  {opacity:.7}
+    50% {opacity:.4;background:var(--cyan)}
+    100%{opacity:0}
+  }
+
+  /* 9. Corrupted logo flash */
+  .ascii-logo.logo-corrupt{
+    animation:logo-corrupt-anim 0.55s steps(2) forwards !important;
+    color:var(--red) !important;
+  }
+  @keyframes logo-corrupt-anim{
+    0%  {color:var(--red);text-shadow:0 0 12px var(--red);filter:none}
+    20% {color:#fff;text-shadow:0 0 24px #fff;filter:blur(1px)}
+    40% {color:var(--red);text-shadow:0 0 8px var(--red);filter:none;transform:translateX(4px)}
+    60% {color:var(--amber);text-shadow:0 0 16px var(--amber);transform:translateX(-2px)}
+    80% {color:var(--red);text-shadow:0 0 6px var(--red)}
+    100%{color:var(--green);text-shadow:0 0 8px var(--green);filter:none;transform:none}
+  }
+
+  /* Legacy overlay */
+  #glitch-overlay-old{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:20;pointer-events:none}
+
+  /* reveal panel */
   #reveal-panel{display:none;animation:reveal-enter 1s ease forwards}
   @keyframes reveal-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .reveal-separator{color:var(--green);font-family:'VT323',monospace;font-size:13px;letter-spacing:2px;margin:14px 0 10px;text-shadow:0 0 6px var(--green);overflow:hidden;white-space:nowrap}
@@ -111,21 +264,13 @@
   .pellet-trail{display:flex;gap:18px;margin-left:8px}
   .pellet{width:6px;height:6px;background:#ffb000;border-radius:50%;box-shadow:0 0 8px #ffb000}
 
-  /* ── MOBILE ── */
   @media(max-width:600px){
-    .orbit-ring{display:none}
-    .side-scroll{display:none}
-    .corner-bl,.corner-br{display:none}
-    .ascii-logo{font-size:clamp(5px,1.8vw,8px)}
-    .ghost{font-size:16px}
-    #sb-mid{display:none!important}
-    .pellet{width:5px;height:5px;gap:12px}
-    .pellet-trail{gap:12px}
+    .orbit-ring{display:none}.side-scroll{display:none}
+    .corner-bl,.corner-br{display:none}.ascii-logo{font-size:clamp(5px,1.8vw,8px)}
+    #sb-mid{display:none!important}.pellet{width:5px;height:5px}.pellet-trail{gap:12px}
   }
   @media(max-width:380px){
-    .ascii-logo{display:none}
-    .prompt-symbol{font-size:13px}
-    #password-input{font-size:15px;letter-spacing:2px}
+    .ascii-logo{display:none}.prompt-symbol{font-size:13px}#password-input{font-size:15px;letter-spacing:2px}
   }
 </style>
 </head>
@@ -134,24 +279,29 @@
 <canvas id="matrix-canvas"></canvas>
 <div id="scanlines"></div>
 <div class="hex-overlay"></div>
+
+<!-- Glitch layers -->
 <div id="glitch-overlay"></div>
+<canvas id="tear-canvas"></canvas>
+<div id="noise-blocks"></div>
+<div id="breach-alert">
+  <div id="breach-inner">
+    <div id="breach-title">⚠ BREACH ⚠</div>
+    <div id="breach-sub">INTRUSION DETECTED — INVALID PASSKEY</div>
+    <div id="breach-code" id="breach-code-lines"></div>
+  </div>
+</div>
+<div id="ghost-intruder" style="font-size:clamp(10px,2vw,14px);letter-spacing:1px;font-family:'Share Tech Mono',monospace;line-height:1.4">▓▓▓▓▓▓▓▓▓▓▓▓<br>▓ GHOST.EXE ▓<br>▓ INJECTING ▓<br>▓▓▓▓▓▓▓▓▓▓▓▓</div>
+<div id="ghost-intruder2" style="font-size:clamp(10px,2vw,14px);letter-spacing:1px;font-family:'Share Tech Mono',monospace;line-height:1.4">▓▓▓▓▓▓▓▓▓▓▓▓<br>▓ GHOST.EXE ▓<br>▓ INJECTING ▓<br>▓▓▓▓▓▓▓▓▓▓▓▓</div>
 
 <div class="orbit-container">
   <div class="orbit-ring ring1" id="ring1"></div>
   <div class="orbit-ring ring2" id="ring2"></div>
   <div class="orbit-ring ring3" id="ring3"></div>
 </div>
-
 <div class="side-scroll side-left" id="side-left"></div>
 <div class="side-scroll side-right" id="side-right"></div>
-
-<!-- 3 ghosts only (top-left one removed) -->
-<div class="ghost">👻</div>
-<div class="ghost">👻</div>
-<div class="ghost">👻</div>
-
 <div class="pac-dots" id="pac-dots"></div>
-
 <div id="pacman-bar">
   <div class="pacman-sprite">ᗧ</div>
   <div class="pellet-trail">
@@ -165,22 +315,19 @@
 <div class="corner corner-tr" id="corner-tr">[ENCRYPT:ON]</div>
 <div class="corner corner-bl" id="corner-bl">[MEM:128K]</div>
 <div class="corner corner-br" id="corner-br">[NET:UP]</div>
-
 <div id="attempt-counter">ATTEMPTS: 0 / ∞</div>
 
 <div id="terminal-wrap">
-  <div class="win95-bar">
+  <div class="win95-bar" id="win95-bar">
     <div class="win95-bar-title">
       <span>🔒</span>
-      <span>SECURE TERMINAL v2.3 — RESTRICTED ACCESS</span>
+      <span id="win95-title">SECURE TERMINAL v2.3 — RESTRICTED ACCESS</span>
     </div>
     <div class="win95-btns">
-      <div class="win95-btn">_</div>
-      <div class="win95-btn">□</div>
-      <div class="win95-btn">✕</div>
+      <div class="win95-btn">_</div><div class="win95-btn">□</div><div class="win95-btn">✕</div>
     </div>
   </div>
-  <div class="terminal-body">
+  <div class="terminal-body" id="terminal-body">
     <div class="ascii-logo" id="ascii-logo"> ██████╗  █████╗  ██████╗    ███╗   ███╗ █████╗ ███╗
  ██╔══██╗██╔══██╗██╔════╝    ████╗ ████║██╔══██╗████╗
  ██████╔╝███████║██║         ██╔████╔██║███████║██╔██╗
@@ -221,6 +368,7 @@ const LOCATION_COORDS  = "45°27′51″N  9°11′17″E";
 // ╚══════════════════════════════════════════════╝
 
 let attempts = 0;
+let glitchBusy = false;
 
 // ── Clock ──
 function updateClock() {
@@ -329,25 +477,221 @@ cycleTxt('corner-br', ['[NET:UP]',     '[PKTS:2049]', '[ERR:0]',     '[SYNC:OK]'
   setTimeout(addLine, 500);
 })();
 
-// ── Password logic ──
+// ════════════════════════════════════════════════
+//  GLITCH ENGINE
+// ════════════════════════════════════════════════
+
+const glitchChars = '!@#$%^&*█▓▒░▄▀■□▪▫◘◙►◄↕‼¶§▬↨↑↓→←∟↔▲▼';
+
+function randGlitchChar() {
+  return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+}
+
+// Screen tear effect via canvas
+function fireTears(duration) {
+  const canvas = document.getElementById('tear-canvas');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.display = 'block';
+  const ctx = canvas.getContext('2d');
+  const end = Date.now() + duration;
+  let frame;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const numTears = 4 + Math.floor(Math.random() * 6);
+    for (let i = 0; i < numTears; i++) {
+      const y      = Math.random() * canvas.height;
+      const h      = 2 + Math.random() * 18;
+      const shift  = (Math.random() - 0.5) * 80;
+      const alpha  = 0.3 + Math.random() * 0.5;
+      // slice copy simulation — draw a colored band
+      const hue = Math.random() > 0.5 ? 'rgba(255,0,51,' : 'rgba(0,255,255,';
+      ctx.fillStyle = hue + alpha + ')';
+      ctx.fillRect(0, y, canvas.width, h);
+      // draw a shifted white sliver
+      ctx.fillStyle = 'rgba(255,255,255,' + (alpha * 0.4) + ')';
+      ctx.fillRect(shift, y + h * 0.3, canvas.width, h * 0.4);
+    }
+    if (Date.now() < end) {
+      frame = requestAnimationFrame(draw);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.style.display = 'none';
+      cancelAnimationFrame(frame);
+    }
+  }
+  draw();
+}
+
+// Pixel noise blocks
+function fireNoiseBlocks(count) {
+  const nb = document.getElementById('noise-blocks');
+  nb.innerHTML = '';
+  nb.style.display = 'block';
+  for (let i = 0; i < count; i++) {
+    const b = document.createElement('div');
+    b.className = 'noise-blk';
+    const w = 20 + Math.random() * 180;
+    const h = 4  + Math.random() * 40;
+    b.style.width  = w + 'px';
+    b.style.height = h + 'px';
+    b.style.left   = (Math.random() * 100) + '%';
+    b.style.top    = (Math.random() * 100) + '%';
+    b.style.animationDelay    = (Math.random() * 0.25) + 's';
+    b.style.animationDuration = (0.25 + Math.random() * 0.35) + 's';
+    const colors = ['var(--red)', 'var(--cyan)', 'var(--amber)', '#fff'];
+    b.style.background = colors[Math.floor(Math.random() * colors.length)];
+    nb.appendChild(b);
+  }
+  setTimeout(function () {
+    nb.style.display = 'none';
+    nb.innerHTML = '';
+  }, 700);
+}
+
+// Corrupt the ASCII logo text briefly
+function corruptLogo() {
+  const logo = document.getElementById('ascii-logo');
+  const original = logo.textContent;
+  const corruptLines = [
+    ' ▓▓▓░░▓  ░▓▓░░▓▓ ▓▓░░░░▓    ▓▓▓░  ░▓▓▓ ▓▓▓░░▓▓ ▓▓▓░',
+    ' ▓▓░░▓▓▓▓░░▓▓▓▓▓░░░░░░░░    ░▓▓▓▓░▓▓▓▓▓░░▓▓▓▓▓▓░▓▓▓▓',
+    ' ▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒ ▒▒▒        ▒▒ ▒▒▒▒ ▒▒▒▒▒▒▒▒▒▒▒▒ ▒▒▒',
+    ' ERROR::ACCESS_VIOLATION::0xDEAD::GHOST_IN_SYSTEM::!!',
+    ' ░░░░░░░  ░░░░░░░ ░░░░░░     ░░░     ░░░░░░  ░░░░░░░',
+  ];
+  logo.classList.add('logo-corrupt');
+  let tick = 0;
+  const interval = setInterval(function () {
+    logo.textContent = corruptLines[tick % corruptLines.length];
+    tick++;
+  }, 80);
+  setTimeout(function () {
+    clearInterval(interval);
+    logo.textContent = original;
+    logo.classList.remove('logo-corrupt');
+  }, 550);
+}
+
+// Win95 title bar shock
+function shockTitleBar(wrongKey) {
+  const bar = document.getElementById('win95-bar');
+  const title = document.getElementById('win95-title');
+  const original = title.textContent;
+  const msgs = [
+    '⚠ SECURITY VIOLATION — KEY: [' + wrongKey + ']',
+    '🔴 GHOST INTRUSION DETECTED',
+    '⛔ INVALID PASSKEY — LOCKOUT WARNING',
+    '💀 SYSTEM BREACH ATTEMPT LOGGED',
+  ];
+  bar.style.background = 'linear-gradient(90deg,#800000 0%,#cc0000 50%,#800000 100%)';
+  title.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+  setTimeout(function () {
+    bar.style.background = '';
+    title.textContent = original;
+  }, 900);
+}
+
+// Breach alert popup
+const breachMessages = [
+  ['TRACE_ROUTE INITIATED', 'LOGGING IP: 192.168.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255), 'GHOST DISPATCHED TO SECTOR-7'],
+  ['FIREWALL TRIPWIRE HIT', 'PACKET DUMP SAVED TO /var/log/breach.log', 'WAKA WAKA — YOU CANNOT HIDE'],
+  ['KERNEL PANIC AVERTED', 'SEGMENT FAULT AT 0xFF' + Math.floor(Math.random()*0xFFFF).toString(16).toUpperCase(), 'GHOST PROTOCOL ENGAGED'],
+];
+let breachMsgIdx = 0;
+
+function showBreachAlert() {
+  const alert = document.getElementById('breach-alert');
+  const codeEl = document.getElementById('breach-code');
+  const msgs = breachMessages[breachMsgIdx % breachMessages.length];
+  breachMsgIdx++;
+  codeEl.innerHTML = msgs.map(function(m){ return '> ' + m; }).join('<br>');
+  alert.classList.add('active');
+  setTimeout(function () { alert.classList.remove('active'); }, 650);
+}
+
+// Full glitch sequence
+function triggerGlitch(wrongKey) {
+  if (glitchBusy) return;
+  glitchBusy = true;
+
+  const overlay = document.getElementById('glitch-overlay');
+  const termWrap = document.getElementById('terminal-wrap');
+  const termBody = document.getElementById('terminal-body');
+  const inputEl  = document.getElementById('password-input');
+  const ghost     = document.getElementById('ghost-intruder');
+  const sbLeft    = document.getElementById('sb-left');
+
+  // Status bar
+  sbLeft.textContent = '🔴 BREACH DETECTED';
+  sbLeft.style.color = '#ff0033';
+  sbLeft.style.textShadow = '0 0 10px #ff0033';
+
+  // 1. Scanline overlay pulse
+  overlay.style.display = 'block';
+  overlay.style.opacity = '1';
+
+  // 2. RGB split on terminal
+  termWrap.classList.add('rgb-split');
+
+  // 3. Screen tears
+  fireTears(500);
+
+  // 4. Pixel noise
+  fireNoiseBlocks(18);
+
+  // 5. Logo corruption
+  corruptLogo();
+
+  // 6. Input shock animation
+  inputEl.classList.add('input-shock');
+
+  // 7. Terminal body color flash
+  termBody.classList.add('corrupted');
+
+  // 8. Title bar
+  shockTitleBar(wrongKey);
+
+  // 9. Ghost flies across
+const ghost2 = document.getElementById('ghost-intruder2');
+[ghost, ghost2].forEach(function(g) {
+  g.style.display = 'block';
+  g.style.animation = 'none';
+  void g.offsetWidth;
+  g.style.animation = 'ghost-appear 1.2s steps(2) forwards';
+});
+
+  // 10. Breach alert
+  setTimeout(showBreachAlert, 80);
+
+  // Cleanup
+  setTimeout(function () {
+    overlay.style.display = 'none';
+    termWrap.classList.remove('rgb-split');
+    termBody.classList.remove('corrupted');
+    inputEl.classList.remove('input-shock');
+    sbLeft.textContent = '🟢 ONLINE';
+    sbLeft.style.color = '';
+    sbLeft.style.textShadow = '';
+  }, 900);
+
+  setTimeout(function () {
+    ghost.style.display = 'none';
+    glitchBusy = false;
+  }, 600);
+}
+
+// ── Status line ──
 const input    = document.getElementById('password-input');
 const statusEl = document.getElementById('status-line');
-const glitch   = document.getElementById('glitch-overlay');
 const counter  = document.getElementById('attempt-counter');
-
-function triggerGlitch() {
-  glitch.style.animation = 'none';
-  glitch.style.display = 'block';
-  void glitch.offsetWidth;
-  glitch.style.animation = 'glitch-flash .45s steps(2) forwards';
-  setTimeout(function () { glitch.style.display = 'none'; }, 500);
-}
 
 function setStatus(msg, type) {
   statusEl.textContent = msg;
   statusEl.className = 'status-' + type;
 }
 
+// ── Reveal ──
 function revealLocation() {
   document.getElementById('input-section').style.display = 'none';
   const panel = document.getElementById('reveal-panel');
@@ -377,6 +721,7 @@ function revealLocation() {
   document.getElementById('sb-left').textContent = '🟡 ACCESS GRANTED';
 }
 
+// ── Password check ──
 input.addEventListener('keydown', function (e) {
   if (e.key !== 'Enter') return;
   const val = input.value.trim();
@@ -390,16 +735,16 @@ input.addEventListener('keydown', function (e) {
     input.disabled = true;
     setTimeout(revealLocation, 1400);
   } else {
-    triggerGlitch();
+    triggerGlitch(val.toUpperCase());
     setStatus('> ACCESS DENIED — WRONG PASSKEY [' + val.toUpperCase() + ']', 'error');
     setTimeout(function () {
       setStatus('> RE-ENTER PASSKEY ▌', 'wait');
       input.value = '';
-    }, 950);
+      input.focus();
+    }, 1100);
   }
 });
 
-// Fix mobile keyboard pushing layout — scroll terminal into view
 input.addEventListener('focus', function () {
   setTimeout(function () {
     document.getElementById('terminal-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
