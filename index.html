@@ -17,33 +17,71 @@
   .ring3{width:420px;height:420px;margin:-210px 0 0 -210px;font-size:9px;color:#ffb00033;animation-duration:18s}
   @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
   #scanlines{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.15) 2px,rgba(0,0,0,.15) 4px)}
-  .corner{position:fixed;font-family:'VT323',monospace;font-size:12px;color:#00ff4155;z-index:3;pointer-events:none;animation:blink 3s step-end infinite}
+  .corner{position:fixed;font-family:'VT323',monospace;font-size:11px;color:#00ff4155;z-index:3;pointer-events:none;animation:blink 3s step-end infinite}
   .corner-tl{top:10px;left:10px}.corner-tr{top:10px;right:10px;text-align:right}.corner-bl{bottom:32px;left:10px}.corner-br{bottom:32px;right:10px;text-align:right}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-  .ghost{position:fixed;font-size:22px;z-index:3;pointer-events:none;filter:drop-shadow(0 0 6px currentColor);animation:ghost-wander linear infinite}
-  .ghost:nth-child(1){color:#ff0033;top:12%;animation-duration:18s;animation-delay:0s}
-  .ghost:nth-child(2){color:#ffb8ff;top:72%;animation-duration:24s;animation-delay:-7s}
-  .ghost:nth-child(3){color:#00ffff;top:38%;animation-duration:20s;animation-delay:-12s}
-  .ghost:nth-child(4){color:#ffb000;top:85%;animation-duration:15s;animation-delay:-4s}
+  .ghost{position:fixed;font-size:20px;z-index:3;pointer-events:none;filter:drop-shadow(0 0 6px currentColor);animation:ghost-wander linear infinite}
+  .ghost:nth-child(1){color:#ffb8ff;top:72%;animation-duration:24s;animation-delay:-7s}
+  .ghost:nth-child(2){color:#00ffff;top:42%;animation-duration:20s;animation-delay:-12s}
+  .ghost:nth-child(3){color:#ffb000;top:83%;animation-duration:15s;animation-delay:-4s}
   @keyframes ghost-wander{0%{left:-5%;transform:scaleX(1)}49%{left:103%;transform:scaleX(1)}50%{left:103%;transform:scaleX(-1)}99%{left:-5%;transform:scaleX(-1)}100%{left:-5%;transform:scaleX(1)}}
   .pac-dots{position:fixed;z-index:3;pointer-events:none;top:0;left:0;width:100%;height:100%}
   .dot{position:absolute;width:5px;height:5px;border-radius:50%;background:#ffb000;box-shadow:0 0 6px #ffb000;animation:dot-pulse 2s ease-in-out infinite}
   @keyframes dot-pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.6);opacity:1}}
-  #terminal-wrap{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;width:min(580px,94vw)}
-  .win95-bar{background:linear-gradient(90deg,#000080 0%,#1084d0 60%,#000080 100%);padding:5px 8px;display:flex;align-items:center;justify-content:space-between;border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #888;font-family:'VT323',monospace;font-size:18px;color:#fff;user-select:none}
-  .win95-bar-title{display:flex;align-items:center;gap:8px}
-  .win95-btns{display:flex;gap:3px}
-  .win95-btn{width:18px;height:16px;background:#c0c0c0;border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #555;border-bottom:2px solid #555;font-size:11px;color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:bold;font-family:'VT323',monospace}
-  .terminal-body{background:rgba(0,3,0,.97);border-left:2px solid #00ff41;border-right:2px solid #00ff41;border-bottom:2px solid #00ff41;padding:24px;box-shadow:0 0 40px #00ff4133,inset 0 0 60px #00110033}
-  .ascii-logo{font-family:'VT323',monospace;font-size:clamp(8px,1.8vw,13px);color:var(--green);text-shadow:0 0 8px var(--green);white-space:pre;line-height:1.1;margin-bottom:18px;animation:logo-flicker 8s ease-in-out infinite}
+
+  /* ── TERMINAL WINDOW ── */
+  #terminal-wrap{
+    position:fixed;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    z-index:10;
+    width:min(580px,96vw);
+    max-height:90vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .win95-bar{
+    background:linear-gradient(90deg,#000080 0%,#1084d0 60%,#000080 100%);
+    padding:5px 8px;display:flex;align-items:center;justify-content:space-between;
+    border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #888;
+    font-family:'VT323',monospace;font-size:clamp(13px,3.5vw,18px);color:#fff;user-select:none;
+    flex-shrink:0;
+  }
+  .win95-bar-title{display:flex;align-items:center;gap:6px;overflow:hidden}
+  .win95-bar-title span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .win95-btns{display:flex;gap:3px;flex-shrink:0}
+  .win95-btn{width:18px;height:16px;background:#c0c0c0;border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #555;border-bottom:2px solid #555;font-size:11px;color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:bold;font-family:'VT323',monospace;flex-shrink:0}
+  .terminal-body{
+    background:rgba(0,3,0,.97);
+    border-left:2px solid #00ff41;border-right:2px solid #00ff41;border-bottom:2px solid #00ff41;
+    padding:clamp(14px,4vw,24px);
+    box-shadow:0 0 40px #00ff4133,inset 0 0 60px #00110033;
+    overflow-y:auto;
+    flex:1;
+  }
+  .ascii-logo{
+    font-family:'VT323',monospace;
+    font-size:clamp(6px,1.55vw,13px);
+    color:var(--green);text-shadow:0 0 8px var(--green);
+    white-space:pre;line-height:1.1;margin-bottom:14px;
+    animation:logo-flicker 8s ease-in-out infinite;
+    overflow:hidden;
+  }
   @keyframes logo-flicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.4}94%{opacity:1}97%{opacity:1}98%{opacity:.3}99%{opacity:1}}
-  .terminal-header{font-family:'VT323',monospace;font-size:13px;color:#00ff4188;margin-bottom:16px;line-height:1.6}
-  .boot-line{font-family:'Share Tech Mono',monospace;font-size:11px;color:#00ff4177;margin-bottom:2px}
-  .prompt-line{display:flex;align-items:center;gap:10px;margin-top:20px}
-  .prompt-symbol{font-family:'VT323',monospace;font-size:22px;color:var(--green);text-shadow:0 0 8px var(--green);white-space:nowrap}
-  #password-input{flex:1;background:transparent;border:none;border-bottom:2px solid var(--green);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:20px;outline:none;caret-color:var(--green);text-shadow:0 0 8px var(--green);letter-spacing:6px;padding:4px 0}
+  .terminal-header{font-family:'VT323',monospace;font-size:clamp(11px,2.5vw,13px);color:#00ff4188;margin-bottom:12px;line-height:1.6}
+  .boot-line{font-family:'Share Tech Mono',monospace;font-size:clamp(9px,2.2vw,11px);color:#00ff4177;margin-bottom:2px}
+  .prompt-line{display:flex;align-items:center;gap:8px;margin-top:16px;flex-wrap:nowrap}
+  .prompt-symbol{font-family:'VT323',monospace;font-size:clamp(16px,4vw,22px);color:var(--green);text-shadow:0 0 8px var(--green);white-space:nowrap;flex-shrink:0}
+  #password-input{
+    flex:1;min-width:0;
+    background:transparent;border:none;border-bottom:2px solid var(--green);
+    color:var(--green);font-family:'Share Tech Mono',monospace;
+    font-size:clamp(16px,4vw,20px);
+    outline:none;caret-color:var(--green);text-shadow:0 0 8px var(--green);
+    letter-spacing:clamp(2px,1.5vw,6px);padding:4px 0;
+    -webkit-appearance:none;border-radius:0;
+  }
   #password-input::placeholder{color:#00ff4133;letter-spacing:2px}
-  #status-line{margin-top:14px;font-family:'VT323',monospace;font-size:18px;min-height:24px}
+  #status-line{margin-top:12px;font-family:'VT323',monospace;font-size:clamp(15px,3.5vw,18px);min-height:22px}
   .status-error{color:var(--red);text-shadow:0 0 8px var(--red);animation:shake .4s ease}
   .status-ok{color:var(--green);text-shadow:0 0 12px var(--green)}
   .status-wait{color:var(--amber);text-shadow:0 0 8px var(--amber)}
@@ -52,25 +90,43 @@
   @keyframes glitch-flash{0%{opacity:1;transform:skewX(0)}25%{opacity:.8;transform:skewX(-2deg) translateX(5px)}50%{opacity:1;transform:skewX(1.5deg) translateX(-4px)}75%{opacity:.6;transform:skewX(-1deg)}100%{opacity:0}}
   #reveal-panel{display:none;animation:reveal-enter 1s ease forwards}
   @keyframes reveal-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  .reveal-separator{color:var(--green);font-family:'VT323',monospace;font-size:14px;letter-spacing:2px;margin:16px 0 10px;text-shadow:0 0 6px var(--green);overflow:hidden;white-space:nowrap}
-  .location-box{border:1px solid var(--green);padding:18px;margin-top:6px;position:relative;background:rgba(0,255,65,.04);box-shadow:0 0 24px #00ff4122,inset 0 0 20px #00ff4108}
-  .location-box::before{content:'[ DECRYPTED PAYLOAD ]';position:absolute;top:-10px;left:14px;background:var(--bg);padding:0 8px;font-family:'VT323',monospace;font-size:14px;color:var(--cyan);text-shadow:0 0 8px var(--cyan)}
-  .location-label{font-family:'VT323',monospace;font-size:13px;color:#00ff4177;margin-bottom:8px;letter-spacing:3px}
-  .location-value{font-family:'VT323',monospace;font-size:clamp(22px,4vw,32px);color:#fff;text-shadow:0 0 12px var(--cyan),0 0 24px var(--cyan);letter-spacing:2px;animation:location-pulse 2s ease-in-out infinite;word-break:break-word}
+  .reveal-separator{color:var(--green);font-family:'VT323',monospace;font-size:13px;letter-spacing:2px;margin:14px 0 10px;text-shadow:0 0 6px var(--green);overflow:hidden;white-space:nowrap}
+  .location-box{border:1px solid var(--green);padding:clamp(12px,3vw,18px);margin-top:6px;position:relative;background:rgba(0,255,65,.04);box-shadow:0 0 24px #00ff4122,inset 0 0 20px #00ff4108}
+  .location-box::before{content:'[ DECRYPTED PAYLOAD ]';position:absolute;top:-10px;left:14px;background:var(--bg);padding:0 8px;font-family:'VT323',monospace;font-size:clamp(11px,2.5vw,14px);color:var(--cyan);text-shadow:0 0 8px var(--cyan)}
+  .location-label{font-family:'VT323',monospace;font-size:clamp(11px,2.5vw,13px);color:#00ff4177;margin-bottom:8px;letter-spacing:3px}
+  .location-value{font-family:'VT323',monospace;font-size:clamp(18px,5vw,32px);color:#fff;text-shadow:0 0 12px var(--cyan),0 0 24px var(--cyan);letter-spacing:2px;animation:location-pulse 2s ease-in-out infinite;word-break:break-word}
   @keyframes location-pulse{0%,100%{text-shadow:0 0 12px var(--cyan),0 0 24px var(--cyan)}50%{text-shadow:0 0 22px var(--cyan),0 0 55px var(--cyan),0 0 90px #fff}}
-  .location-coords{font-family:'Share Tech Mono',monospace;font-size:12px;color:#00ff4166;margin-top:10px}
+  .location-coords{font-family:'Share Tech Mono',monospace;font-size:clamp(10px,2.2vw,12px);color:#00ff4166;margin-top:10px}
   .side-scroll{position:fixed;writing-mode:vertical-rl;font-family:'Share Tech Mono',monospace;font-size:10px;color:#00ff4130;z-index:3;pointer-events:none;white-space:nowrap;animation:scroll-down linear 22s infinite}
   .side-left{left:16px;top:-60%;animation-delay:0s}.side-right{right:16px;top:-60%;animation-delay:-11s}
   @keyframes scroll-down{from{top:-60%}to{top:130%}}
   .hex-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:.05;background-image:radial-gradient(circle,#00ff41 1px,transparent 1px);background-size:30px 30px}
-  #attempt-counter{position:fixed;top:12px;right:12px;font-family:'VT323',monospace;font-size:14px;color:var(--amber);z-index:20;text-shadow:0 0 8px var(--amber)}
-  #status-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(90deg,#000080,#1084d0 50%,#000080);padding:3px 12px;font-family:'VT323',monospace;font-size:15px;color:#fff;display:flex;justify-content:space-between;z-index:15;border-top:2px solid #fff}
-  #pacman-bar{position:fixed;bottom:28px;left:0;z-index:4;pointer-events:none;display:flex;align-items:center;animation:pacman-run 13s linear infinite}
+  #attempt-counter{position:fixed;top:10px;right:10px;font-family:'VT323',monospace;font-size:clamp(11px,2.5vw,14px);color:var(--amber);z-index:20;text-shadow:0 0 8px var(--amber)}
+  #status-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(90deg,#000080,#1084d0 50%,#000080);padding:3px 10px;font-family:'VT323',monospace;font-size:clamp(11px,2.8vw,15px);color:#fff;display:flex;justify-content:space-between;z-index:15;border-top:2px solid #fff;gap:8px;overflow:hidden}
+  #sb-mid{display:none}
+  #pacman-bar{position:fixed;bottom:26px;left:0;z-index:4;pointer-events:none;display:flex;align-items:center;animation:pacman-run 13s linear infinite}
   @keyframes pacman-run{from{left:-100px}to{left:110vw}}
-  .pacman-sprite{font-size:28px;filter:drop-shadow(0 0 8px #ffb000);animation:chomp .25s steps(2) infinite}
+  .pacman-sprite{font-size:24px;filter:drop-shadow(0 0 8px #ffb000);animation:chomp .25s steps(2) infinite}
   @keyframes chomp{50%{transform:scaleX(.55)}}
-  .pellet-trail{display:flex;gap:20px;margin-left:8px}
-  .pellet{width:7px;height:7px;background:#ffb000;border-radius:50%;box-shadow:0 0 8px #ffb000}
+  .pellet-trail{display:flex;gap:18px;margin-left:8px}
+  .pellet{width:6px;height:6px;background:#ffb000;border-radius:50%;box-shadow:0 0 8px #ffb000}
+
+  /* ── MOBILE ── */
+  @media(max-width:600px){
+    .orbit-ring{display:none}
+    .side-scroll{display:none}
+    .corner-bl,.corner-br{display:none}
+    .ascii-logo{font-size:clamp(5px,1.8vw,8px)}
+    .ghost{font-size:16px}
+    #sb-mid{display:none!important}
+    .pellet{width:5px;height:5px;gap:12px}
+    .pellet-trail{gap:12px}
+  }
+  @media(max-width:380px){
+    .ascii-logo{display:none}
+    .prompt-symbol{font-size:13px}
+    #password-input{font-size:15px;letter-spacing:2px}
+  }
 </style>
 </head>
 <body>
@@ -89,7 +145,7 @@
 <div class="side-scroll side-left" id="side-left"></div>
 <div class="side-scroll side-right" id="side-right"></div>
 
-<div class="ghost">👻</div>
+<!-- 3 ghosts only (top-left one removed) -->
 <div class="ghost">👻</div>
 <div class="ghost">👻</div>
 <div class="ghost">👻</div>
@@ -143,9 +199,6 @@
       <div class="reveal-separator" id="sep-line"></div>
       <div class="location-box">
         <div class="location-label">▶ DECRYPTED COORDINATES</div>
-        <!-- =============================================  -->
-        <!--  The location value is set by JS below        -->
-        <!-- =============================================  -->
         <div class="location-value" id="location-text"></div>
         <div class="location-coords" id="location-coords"></div>
       </div>
@@ -154,8 +207,8 @@
 </div>
 
 <div id="status-bar">
-  <span id="sb-left">🟢 SYSTEM ONLINE</span>
-  <span>PAC-MAN OS v95.4 — KERNEL 3.14</span>
+  <span id="sb-left">🟢 ONLINE</span>
+  <span id="sb-mid">PAC-MAN OS v95.4</span>
   <span id="sb-right"></span>
 </div>
 
@@ -173,7 +226,7 @@ let attempts = 0;
 function updateClock() {
   const n = new Date();
   document.getElementById('sb-right').textContent =
-    n.toLocaleTimeString('en-GB') + '   ' + n.toLocaleDateString('en-GB');
+    n.toLocaleTimeString('en-GB') + '  ' + n.toLocaleDateString('en-GB');
 }
 setInterval(updateClock, 1000);
 updateClock();
@@ -185,9 +238,9 @@ updateClock();
   const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;<>?/\\~`';
   let cols, drops;
   function resize() {
-    canvas.width = window.innerWidth;
+    canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
-    cols = Math.floor(canvas.width / 16);
+    cols  = Math.floor(canvas.width / 16);
     drops = Array(cols).fill(1);
   }
   window.addEventListener('resize', resize);
@@ -215,8 +268,8 @@ document.getElementById('ring3').textContent =
   'ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · '.repeat(4);
 
 // ── Side scrolling code ──
-const sideCode = 'function decrypt(key){const h=[];for(let i=0;i<key.length;i++){h.push(key.charCodeAt(i).toString(16));}return h.join(":");} // WARNING: UNAUTHORIZED ACCESS IS PROHIBITED AND WILL BE PROSECUTED // 0xDEADBEEF 0xCAFEBABE 0xFACEFEED // chmod 700 /root/secret.dat // sudo gpg --decrypt --armor payload.asc // ssh -i id_rsa ghost@192.168.0.1 // netstat -tulpn | grep LISTEN // iptables -A INPUT -p tcp --dport 22 -j DROP // find / -name "*.key" 2>/dev/null // openssl enc -aes-256-cbc -d -in secret.bin -out plain.txt // ';
-document.getElementById('side-left').textContent = sideCode.repeat(3);
+const sideCode = 'function decrypt(key){const h=[];for(let i=0;i<key.length;i++){h.push(key.charCodeAt(i).toString(16));}return h.join(":");} // WARNING: UNAUTHORIZED ACCESS IS PROHIBITED // 0xDEADBEEF 0xCAFEBABE 0xFACEFEED // chmod 700 /root/secret.dat // gpg --decrypt --armor payload.asc // ssh -i id_rsa ghost@192.168.0.1 // openssl enc -aes-256-cbc -d -in secret.bin // ';
+document.getElementById('side-left').textContent  = sideCode.repeat(3);
 document.getElementById('side-right').textContent = sideCode.split('').reverse().join('').repeat(3);
 
 // ── Pac-Man dots ──
@@ -277,15 +330,15 @@ cycleTxt('corner-br', ['[NET:UP]',     '[PKTS:2049]', '[ERR:0]',     '[SYNC:OK]'
 })();
 
 // ── Password logic ──
-const input   = document.getElementById('password-input');
+const input    = document.getElementById('password-input');
 const statusEl = document.getElementById('status-line');
-const glitch  = document.getElementById('glitch-overlay');
-const counter = document.getElementById('attempt-counter');
+const glitch   = document.getElementById('glitch-overlay');
+const counter  = document.getElementById('attempt-counter');
 
 function triggerGlitch() {
   glitch.style.animation = 'none';
   glitch.style.display = 'block';
-  void glitch.offsetWidth; // reflow
+  void glitch.offsetWidth;
   glitch.style.animation = 'glitch-flash .45s steps(2) forwards';
   setTimeout(function () { glitch.style.display = 'none'; }, 500);
 }
@@ -300,15 +353,13 @@ function revealLocation() {
   const panel = document.getElementById('reveal-panel');
   panel.style.display = 'block';
 
-  // Animate separator line
   const sep = document.getElementById('sep-line');
   let s = ''; let k = 0;
   const t1 = setInterval(function () {
     s += '═'; sep.textContent = s;
-    if (++k >= 56) clearInterval(t1);
+    if (++k >= 50) clearInterval(t1);
   }, 16);
 
-  // Typewrite location name
   const locEl = document.getElementById('location-text');
   locEl.textContent = '';
   let j = 0;
@@ -319,12 +370,11 @@ function revealLocation() {
     }, 55);
   }, 850);
 
-  // Show coords after name finishes
   setTimeout(function () {
     document.getElementById('location-coords').textContent = LOCATION_COORDS;
   }, 850 + LOCATION_TEXT.length * 55 + 400);
 
-  document.getElementById('sb-left').textContent = '🟡 DECRYPTED — ACCESS GRANTED';
+  document.getElementById('sb-left').textContent = '🟡 ACCESS GRANTED';
 }
 
 input.addEventListener('keydown', function (e) {
@@ -349,7 +399,13 @@ input.addEventListener('keydown', function (e) {
   }
 });
 
-// Auto-focus after boot
+// Fix mobile keyboard pushing layout — scroll terminal into view
+input.addEventListener('focus', function () {
+  setTimeout(function () {
+    document.getElementById('terminal-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 350);
+});
+
 setTimeout(function () { input.focus(); }, 2200);
 </script>
 </body>
