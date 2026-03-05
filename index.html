@@ -240,6 +240,32 @@
   /* Legacy overlay */
   #glitch-overlay-old{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:20;pointer-events:none}
 
+  /* ── Vinyl disc ── */
+  #vinyl-disc{
+    position:fixed;bottom:60px;right:28px;
+    z-index:2;pointer-events:none;
+    font-family:'Share Tech Mono',monospace;
+    font-size:clamp(44px,7vw,72px);
+    color:#00ff4109;
+    line-height:1;
+    animation:vinyl-spin 2.2s linear infinite;
+    filter:drop-shadow(0 0 6px #00ff4122);
+    user-select:none;
+  }
+  @keyframes vinyl-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  #vinyl-label{
+    position:fixed;bottom:60px;right:28px;
+    z-index:2;pointer-events:none;
+    font-family:'VT323',monospace;
+    font-size:clamp(6px,1vw,9px);
+    color:#00ff4122;
+    line-height:1;
+    text-align:center;
+    width:clamp(44px,7vw,72px);
+    letter-spacing:1px;
+    user-select:none;
+  }
+
   /* reveal panel */
   #reveal-panel{display:none;animation:reveal-enter 1s ease forwards}
   @keyframes reveal-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -291,8 +317,12 @@
     <div id="breach-code" id="breach-code-lines"></div>
   </div>
 </div>
-<div id="ghost-intruder" style="font-size:clamp(10px,2vw,14px);letter-spacing:1px;font-family:'Share Tech Mono',monospace;line-height:1.4">▓▓▓▓▓▓▓▓▓▓▓▓<br>▓ GHOST.EXE ▓<br>▓ INJECTING ▓<br>▓▓▓▓▓▓▓▓▓▓▓▓</div>
-<div id="ghost-intruder2" style="font-size:clamp(10px,2vw,14px);letter-spacing:1px;font-family:'Share Tech Mono',monospace;line-height:1.4">▓▓▓▓▓▓▓▓▓▓▓▓<br>▓ GHOST.EXE ▓<br>▓ INJECTING ▓<br>▓▓▓▓▓▓▓▓▓▓▓▓</div>
+<div id="ghost-intruder" style="font-size:clamp(10px,2vw,14px);letter-spacing:1px;font-family:'Share Tech Mono',monospace;line-height:1.4">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓<br>▓ TECHNO BREAKFAST  ▓<br>▓    INJECTING      ▓<br>▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</div>
+<div id="ghost-intruder2" style="font-size:clamp(10px,2vw,14px);letter-spacing:1px;font-family:'Share Tech Mono',monospace;line-height:1.4">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓<br>▓ TECHNO BREAKFAST  ▓<br>▓    INJECTING      ▓<br>▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</div>
+
+<!-- Vinyl disc — background ambient -->
+<div id="vinyl-disc">◉</div>
+<div id="vinyl-label">33⅓ RPM</div>
 
 <div class="orbit-container">
   <div class="orbit-ring ring1" id="ring1"></div>
@@ -328,16 +358,22 @@
     </div>
   </div>
   <div class="terminal-body" id="terminal-body">
-    <div class="ascii-logo" id="ascii-logo"> ██████╗  █████╗  ██████╗    ███╗   ███╗ █████╗ ███╗
- ██╔══██╗██╔══██╗██╔════╝    ████╗ ████║██╔══██╗████╗
- ██████╔╝███████║██║         ██╔████╔██║███████║██╔██╗
- ██╔═══╝ ██╔══██║██║         ██║╚██╔╝██║██╔══██║██║╚██╗
- ██║     ██║  ██║╚██████╗    ██║ ╚═╝ ██║██║  ██║██║ ╚██╗
- ╚═╝     ╚═╝  ╚═╝ ╚═════╝   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝</div>
+    <div class="ascii-logo" id="ascii-logo"> ████████╗███████╗ ██████╗██╗  ██╗███╗  ██╗ ██████╗
+ ╚══██╔══╝██╔════╝██╔════╝██║  ██║████╗ ██║██╔═══██╗
+    ██║   █████╗  ██║     ███████║██╔██╗██║██║   ██║
+    ██║   ██╔══╝  ██║     ██╔══██║██║╚████║██║   ██║
+    ██║   ███████╗╚██████╗██║  ██║██║ ╚███║╚██████╔╝
+    ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚══╝ ╚═════╝
+ ██████╗ ██████╗ ███████╗ █████╗ ██╗  ██╗███████╗ █████╗ ███████╗████████╗
+ ██╔══██╗██╔══██╗██╔════╝██╔══██╗██║ ██╔╝██╔════╝██╔══██╗██╔════╝╚══██╔══╝
+ ██████╔╝██████╔╝█████╗  ███████║█████╔╝ █████╗  ███████║███████╗   ██║
+ ██╔══██╗██╔══██╗██╔══╝  ██╔══██║██╔═██╗ ██╔══╝  ██╔══██║╚════██║   ██║
+ ██████╔╝██║  ██║███████╗██║  ██║██║  ██╗██║     ██║  ██║███████║   ██║
+ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝   ╚═╝</div>
     <div class="terminal-header" id="boot-log"></div>
     <div id="input-section">
       <div class="prompt-line">
-        <span class="prompt-symbol">root@PAC-MAN:~#&nbsp;</span>
+        <span class="prompt-symbol">root@TECHNO-BREAKFAST:~#&nbsp;</span>
         <input type="password" id="password-input" placeholder="ENTER PASSKEY..." autocomplete="off" spellcheck="false" maxlength="32"/>
       </div>
       <div id="status-line"></div>
@@ -355,7 +391,7 @@
 
 <div id="status-bar">
   <span id="sb-left">🟢 ONLINE</span>
-  <span id="sb-mid">PAC-MAN OS v95.4</span>
+  <span id="sb-mid">TECHNO BREAKFAST OS v95.4</span>
   <span id="sb-right"></span>
 </div>
 
@@ -411,12 +447,12 @@ updateClock();
 document.getElementById('ring1').textContent =
   '10110100111001010110110010011101001010110101001101010011001011010101001 '.repeat(8);
 document.getElementById('ring2').textContent =
-  'ACCESS_DENIED :: FIREWALL_ACTIVE :: TRACE_ROUTE :: PACKET_LOSS :: ENCRYPTED :: GHOST_DETECTED :: '.repeat(5);
+  'ACCESS_DENIED :: FIREWALL_ACTIVE :: TRACE_ROUTE :: PACKET_LOSS :: ENCRYPTED :: TECHNO_BREAKFAST_DETECTED :: /dev/wine :: '.repeat(5);
 document.getElementById('ring3').textContent =
-  'ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · ᗧ · · · '.repeat(4);
+  'ᗧ · · · ◉ · · · ᗧ · · · 🥐 · · · ᗧ · · · ◉ · · · ᗧ · · · 🍷 · · · ᗧ · · · ◉ · · · '.repeat(3);
 
 // ── Side scrolling code ──
-const sideCode = 'function decrypt(key){const h=[];for(let i=0;i<key.length;i++){h.push(key.charCodeAt(i).toString(16));}return h.join(":");} // WARNING: UNAUTHORIZED ACCESS IS PROHIBITED // 0xDEADBEEF 0xCAFEBABE 0xFACEFEED // chmod 700 /root/secret.dat // gpg --decrypt --armor payload.asc // ssh -i id_rsa ghost@192.168.0.1 // openssl enc -aes-256-cbc -d -in secret.bin // ';
+const sideCode = 'function decrypt(key){const h=[];for(let i=0;i<key.length;i++){h.push(key.charCodeAt(i).toString(16));}return h.join(":");} // WARNING: UNAUTHORIZED ACCESS IS PROHIBITED // 0xDEADBEEF 0xCAFEBABE 0xFACEFEED // chmod 700 /root/secret.dat // gpg --decrypt --armor payload.asc // ssh -i id_rsa technobreakfast@192.168.0.1 // openssl enc -aes-256-cbc -d -in secret.bin // [VINYL::33rpm::side-A] // croissant.bin loaded // [GLASS:rouge::0xWINE] // ';
 document.getElementById('side-left').textContent  = sideCode.repeat(3);
 document.getElementById('side-right').textContent = sideCode.split('').reverse().join('').repeat(3);
 
@@ -446,16 +482,18 @@ function cycleTxt(id, arr) {
 }
 cycleTxt('corner-tl', ['[SYS:ACTIVE]', '[NODE:03]',   '[PING:12ms]', '[CPU:07%]']);
 cycleTxt('corner-tr', ['[ENCRYPT:ON]', '[AES-256]',   '[KEY:????]',  '[AUTH:PEND]']);
-cycleTxt('corner-bl', ['[MEM:128K]',   '[SWAP:ON]',   '[FS:EXT4]',   '[MOUNT:OK]']);
-cycleTxt('corner-br', ['[NET:UP]',     '[PKTS:2049]', '[ERR:0]',     '[SYNC:OK]']);
+cycleTxt('corner-bl', ['[MEM:128K]',   '[RPM:33⅓]',  '[FS:EXT4]',   '[MOUNT:OK]']);
+cycleTxt('corner-br', ['[NET:UP]',     '[PKTS:2049]', '[ERR:0]',     '[🍷:CHILLED]']);
 
 // ── Boot log typewriter ──
 (function () {
   const lines = [
-    '> Initializing PAC-MAN OS kernel 3.14...',
-    '> Loading ghost subsystem............. [OK]',
-    '> Mounting /dev/maze.................. [OK]',
-    '> AES-256 decryption module v7.3...... [READY]',
+    '> Initializing TECHNO BREAKFAST OS kernel 3.14...',
+    '> Loading breakfast subsystem........... [OK]',
+    '> Mounting /dev/dancefloor.............. [OK]',
+    '> Spinning up /dev/vinyl @ 33⅓ rpm..... [OK]',
+    '> AES-256 decryption module v7.3........ [READY]',
+    '> croissant.cfg detected — flaky layer.. [OK]',
     '> WARNING: Unauthorized access will be traced.',
     '> Enter passkey to decrypt payload ▌',
   ];
@@ -504,11 +542,9 @@ function fireTears(duration) {
       const h      = 2 + Math.random() * 18;
       const shift  = (Math.random() - 0.5) * 80;
       const alpha  = 0.3 + Math.random() * 0.5;
-      // slice copy simulation — draw a colored band
       const hue = Math.random() > 0.5 ? 'rgba(255,0,51,' : 'rgba(0,255,255,';
       ctx.fillStyle = hue + alpha + ')';
       ctx.fillRect(0, y, canvas.width, h);
-      // draw a shifted white sliver
       ctx.fillStyle = 'rgba(255,255,255,' + (alpha * 0.4) + ')';
       ctx.fillRect(shift, y + h * 0.3, canvas.width, h * 0.4);
     }
@@ -557,7 +593,7 @@ function corruptLogo() {
     ' ▓▓▓░░▓  ░▓▓░░▓▓ ▓▓░░░░▓    ▓▓▓░  ░▓▓▓ ▓▓▓░░▓▓ ▓▓▓░',
     ' ▓▓░░▓▓▓▓░░▓▓▓▓▓░░░░░░░░    ░▓▓▓▓░▓▓▓▓▓░░▓▓▓▓▓▓░▓▓▓▓',
     ' ▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒ ▒▒▒        ▒▒ ▒▒▒▒ ▒▒▒▒▒▒▒▒▒▒▒▒ ▒▒▒',
-    ' ERROR::ACCESS_VIOLATION::0xDEAD::GHOST_IN_SYSTEM::!!',
+    ' ERROR::ACCESS_VIOLATION::0xDEAD::TECHNO_BREAKFAST_IN_SYSTEM::!!',
     ' ░░░░░░░  ░░░░░░░ ░░░░░░     ░░░     ░░░░░░  ░░░░░░░',
   ];
   logo.classList.add('logo-corrupt');
@@ -580,7 +616,7 @@ function shockTitleBar(wrongKey) {
   const original = title.textContent;
   const msgs = [
     '⚠ SECURITY VIOLATION — KEY: [' + wrongKey + ']',
-    '🔴 GHOST INTRUSION DETECTED',
+    '🔴 TECHNO BREAKFAST INTRUSION DETECTED',
     '⛔ INVALID PASSKEY — LOCKOUT WARNING',
     '💀 SYSTEM BREACH ATTEMPT LOGGED',
   ];
@@ -594,9 +630,10 @@ function shockTitleBar(wrongKey) {
 
 // Breach alert popup
 const breachMessages = [
-  ['TRACE_ROUTE INITIATED', 'LOGGING IP: 192.168.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255), 'GHOST DISPATCHED TO SECTOR-7'],
-  ['FIREWALL TRIPWIRE HIT', 'PACKET DUMP SAVED TO /var/log/breach.log', 'WAKA WAKA — YOU CANNOT HIDE'],
-  ['KERNEL PANIC AVERTED', 'SEGMENT FAULT AT 0xFF' + Math.floor(Math.random()*0xFFFF).toString(16).toUpperCase(), 'GHOST PROTOCOL ENGAGED'],
+  ['TRACE_ROUTE INITIATED', 'LOGGING IP: 192.168.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255), 'TECHNO BREAKFAST DISPATCHED TO SECTOR-7'],
+  ['FIREWALL TRIPWIRE HIT', '/var/log/vinyl.spin — NEEDLE SKIPPED', 'WAKA WAKA — YOU CANNOT HIDE'],
+  ['KERNEL PANIC AVERTED', 'SEGMENT FAULT AT 0xFF' + Math.floor(Math.random()*0xFFFF).toString(16).toUpperCase(), 'TECHNO BREAKFAST PROTOCOL ENGAGED'],
+  ['CROISSANT.BIN CORRUPTED', 'FLAKY LAYER EXCEPTION :: BUTTER OVERFLOW', '🍷 WINE PROCESS STILL RUNNING'],
 ];
 let breachMsgIdx = 0;
 
@@ -652,14 +689,14 @@ function triggerGlitch(wrongKey) {
   // 8. Title bar
   shockTitleBar(wrongKey);
 
-  // 9. Ghost flies across
-const ghost2 = document.getElementById('ghost-intruder2');
-[ghost, ghost2].forEach(function(g) {
-  g.style.display = 'block';
-  g.style.animation = 'none';
-  void g.offsetWidth;
-  g.style.animation = 'ghost-appear 1.2s steps(2) forwards';
-});
+  // 9. Intruder boxes appear
+  const ghost2 = document.getElementById('ghost-intruder2');
+  [ghost, ghost2].forEach(function(g) {
+    g.style.display = 'block';
+    g.style.animation = 'none';
+    void g.offsetWidth;
+    g.style.animation = 'ghost-appear 1.2s steps(2) forwards';
+  });
 
   // 10. Breach alert
   setTimeout(showBreachAlert, 80);
